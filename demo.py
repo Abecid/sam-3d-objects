@@ -18,4 +18,5 @@ output = inference(image, mask, seed=42)
 
 # export gaussian splat
 output["gs"].save_ply(f"splat.ply")
+output["mesh"][0].save_mesh_to_glb()
 print("Your reconstruction has been saved to splat.ply")

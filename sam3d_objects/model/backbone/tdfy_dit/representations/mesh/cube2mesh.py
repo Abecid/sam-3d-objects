@@ -1,7 +1,9 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
-import torch
-from ...modules.sparse import SparseTensor
 from easydict import EasyDict as edict
+import torch
+import trimesh
+
+from ...modules.sparse import SparseTensor
 from .utils_cube import *
 from .flexicubes.flexicubes import FlexiCubes
 
@@ -49,6 +51,16 @@ class MeshExtractResult:
 
         v_normals = torch.nn.functional.normalize(v_normals, dim=1)
         return v_normals
+    
+    def save_mesh_to_glb(self, path="mesh.glb"):
+        verts = self.vertices.detach().cpu().numpy()
+        faces = self.faces.detach().cpu().numpy()
+
+        # trimesh wants (N,3) float and (M,3) int
+        tm = trimesh.Trimesh(vertices=verts, faces=faces, process=False)
+
+        tm.export(path)
+        print(f"saved → {path}")
 
 
 class SparseFeatures2Mesh:
