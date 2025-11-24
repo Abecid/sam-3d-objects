@@ -5,6 +5,15 @@
 * A linux 64-bits architecture (i.e. `linux-64` platform in `mamba info`).
 * A NVIDIA GPU with at least 32 Gb of VRAM.
 
+Install mamba
+```bash
+conda install -n base -c conda-forge mamba
+eval "$(mamba shell hook --shell bash)"
+
+mamba shell init --shell bash --root-prefix=~/.local/share/mamba
+source ~/.bashrc
+```
+
 ## 1. Setup Python Environment
 
 The following will install the default environment. If you use `conda` instead of `mamba`, replace its name in the first two lines. Note that you may have to build the environment on a compute node with GPU (e.g., you may get a `RuntimeError: Not compiled with GPU support` error when running certain parts of the code that use Pytorch3D).
@@ -14,8 +23,12 @@ The following will install the default environment. If you use `conda` instead o
 mamba env create -f environments/default.yml
 mamba activate sam3d-objects
 
+pip install torch==2.5.1 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+pip install hatchling hatch-requirements-txt editables
+pip install -e . --no-build-isolation
+
 # for pytorch/cuda dependencies
-export PIP_EXTRA_INDEX_URL="https://pypi.ngc.nvidia.com https://download.pytorch.org/whl/cu121"
+# export PIP_EXTRA_INDEX_URL="https://pypi.ngc.nvidia.com https://download.pytorch.org/whl/cu121"
 
 # install sam3d-objects and core dependencies
 pip install -e '.[dev]'
@@ -26,6 +39,7 @@ export PIP_FIND_LINKS="https://nvidia-kaolin.s3.us-east-2.amazonaws.com/torch-2.
 pip install -e '.[inference]'
 
 # patch things that aren't yet in official pip packages
+pip install hydra-core
 ./patching/hydra # https://github.com/facebookresearch/hydra/pull/2863
 ```
 

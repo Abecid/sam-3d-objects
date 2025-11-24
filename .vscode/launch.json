@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run demo.py (sam3d-objects)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/demo.py",
+            "console": "integratedTerminal",
+            "python": "/home/fai/miniconda3/envs/sam3d-objects/bin/python",
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
