@@ -1,5 +1,6 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 from easydict import EasyDict as edict
+import numpy as np
 import torch
 import trimesh
 
@@ -58,6 +59,16 @@ class MeshExtractResult:
 
         # trimesh wants (N,3) float and (M,3) int
         tm = trimesh.Trimesh(vertices=verts, faces=faces, process=False)
+
+        if self.vertex_attrs is not None:
+            rgb = self.vertex_attrs[:, :3].detach().cpu().numpy()
+            rgb = (rgb * 255).astype(np.uint8)
+
+            # add alpha channel
+            alpha = np.full((rgb.shape[0], 1), 255, dtype=np.uint8)
+            colors = np.concatenate([rgb, alpha], axis=1)
+
+            tm.visual.vertex_colors = colors
 
         tm.export(path)
         print(f"saved → {path}")

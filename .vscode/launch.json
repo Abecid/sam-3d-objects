@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/demo.py",
             "console": "integratedTerminal",
-            "python": "/home/fai/miniconda3/envs/sam3d-objects/bin/python",
+            "python": "/home/fai/.local/share/mamba/envs/sam3d-objects/bin/python",
             "cwd": "${workspaceFolder}"
         }
     ]
